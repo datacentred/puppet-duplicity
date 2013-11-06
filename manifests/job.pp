@@ -142,6 +142,12 @@ define duplicity::job(
     default => [],
   }
 
+  if is_array($directory) {
+    $_directories = $directory
+  } else {
+    $_directories = [$directory]
+  }
+
   $_remove_older_than_command = $_remove_older_than ? {
     undef => '',
     default => " && duplicity remove-older-than $_remove_older_than --s3-use-new-style ${_encryption}${_ssh_options}--force $_url"

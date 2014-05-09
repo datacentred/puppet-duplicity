@@ -155,7 +155,7 @@ define duplicity::job(
     $_keystr = join([ "'", join($_pubkeys, "' '"), "'" ], '')
     $_numkeys = size($_pubkeys)
     exec { "duplicity-pgp-$title":
-      command => "gpg --keyserver subkeys.pgp.net --recv-keys $_keystr",
+      command => "gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys $_keystr",
       path    => "/usr/bin:/usr/sbin:/bin",
       unless  => "test $(gpg --with-colons --list-keys $_keystr | grep '^pub:' | wc -l) -eq $_numkeys"
     }

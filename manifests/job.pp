@@ -12,6 +12,7 @@ define duplicity::job(
   $pubkey_id = undef,
   $full_if_older_than = undef,
   $pre_command = undef,
+  $post_command = undef,
   $remove_older_than = undef,
 ) {
 
@@ -83,6 +84,11 @@ define duplicity::job(
   $_pre_command = $pre_command ? {
     undef => '',
     default => "$pre_command && "
+  }
+
+  $_post_command = $post_command ? {
+    undef => '',
+    default => $post_command,
   }
 
   $_remove_older_than = $remove_older_than ? {

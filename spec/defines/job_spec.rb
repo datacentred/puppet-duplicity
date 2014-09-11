@@ -264,6 +264,26 @@ describe 'duplicity::job' do
     end
   end
 
+  context "with post_command" do
+
+    let(:params) {
+      {
+        :bucket       => 'somebucket',
+        :directory    => '/root/mysqldump',
+        :dest_id      => 'some_id',
+        :dest_key     => 'some_key',
+        :pre_command  => 'mysqldump database',
+        :post_command => 'echo Hello World',
+        :spoolfile    => spoolfile,
+      }
+    }
+
+    it "should append post_command to cronjob" do
+      should contain_file(spoolfile) \
+        .with_content(/^duplicity .+\necho Hello World\n\Z/)
+    end
+  end
+
   context 'with ensure => absent' do
 
     let(:params) {

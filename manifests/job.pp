@@ -14,6 +14,7 @@ define duplicity::job(
   $pre_command = undef,
   $post_command = undef,
   $remove_older_than = undef,
+  $archive_directory = '~/.cache/duplicity/',
 ) {
 
   include duplicity::params

@@ -65,7 +65,7 @@ describe 'duplicity::job' do
       should contain_file(spoolfile) \
         .with_content(/^CLOUDFILES_USERNAME='some_id'$/)\
         .with_content(/^CLOUDFILES_APIKEY='some_key'$/)\
-        .with_content(/^duplicity --verbosity warning --no-print-statistics --full-if-older-than 30D --s3-use-new-style --no-encryption --include '\/etc\/' --exclude '\*\*' \/ 'cf\+http:\/\/somebucket'$/)
+        .with_content(/^duplicity --verbosity warning --no-print-statistics --full-if-older-than 30D --s3-use-new-style --no-encryption --include '\/etc\/' --exclude '\*\*' --archive-dir ~\/.cache\/duplicity\/ \/ 'cf\+http:\/\/somebucket'$/)
     end
   end
 
@@ -85,12 +85,30 @@ describe 'duplicity::job' do
       should contain_file(spoolfile) \
         .with_content(/^AWS_ACCESS_KEY_ID='some_id'$/)\
         .with_content(/^AWS_SECRET_ACCESS_KEY='some_key'$/)\
-        .with_content(/^duplicity --verbosity warning --no-print-statistics --full-if-older-than 30D --s3-use-new-style --no-encryption --include '\/etc\/' --exclude '\*\*' \/ 's3\+http:\/\/somebucket\/#{fqdn}\/some_backup_name\/'$/)
+        .with_content(/^duplicity --verbosity warning --no-print-statistics --full-if-older-than 30D --s3-use-new-style --no-encryption --include '\/etc\/' --exclude '\*\*' --archive-dir ~\/.cache\/duplicity\/ \/ 's3\+http:\/\/somebucket\/#{fqdn}\/some_backup_name\/'$/)
     end
 
 
     it "should make a full backup every X days" do
 
+    end
+  end
+
+  context "with a defined archive_directory" do
+    let(:params) {
+      {
+        :bucket       => 'somebucket',
+        :directory    => '/etc/',
+        :dest_id  => 'some_id',
+        :dest_key => 'some_key',
+        :spoolfile => spoolfile,
+        :archive_directory => '/root/giraffe/neckbeard/',
+      }
+    }
+
+    it "adds a spoolfile which contains --archive-dir" do
+      should contain_file(spoolfile) \
+        .with_content(/^duplicity --verbosity warning --no-print-statistics --full-if-older-than 30D --s3-use-new-style --no-encryption --include '\/etc\/' --exclude '\*\*' --archive-dir \/root\/giraffe\/neckbeard\/ \/ 's3\+http:\/\/somebucket\/#{fqdn}\/some_backup_name\/'$/)
     end
   end
 

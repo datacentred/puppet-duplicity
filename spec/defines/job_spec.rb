@@ -173,7 +173,7 @@ describe 'duplicity::job' do
 
     it "should download and import the specified pubkey" do
       should contain_exec("duplicity-pgp-#{title}") \
-        .with_command("gpg --keyserver subkeys.pgp.net --recv-keys '#{some_pubkey_id}'") \
+        .with_command("gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys '#{some_pubkey_id}'") \
         .with_path("/usr/bin:/usr/sbin:/bin") \
         .with_unless(/gpg .* --list-keys '#{some_pubkey_id}'/)
     end
@@ -201,7 +201,7 @@ describe 'duplicity::job' do
 
     it "should download and import the specified pubkey" do
       should contain_exec("duplicity-pgp-#{title}") \
-        .with_command("gpg --keyserver subkeys.pgp.net --recv-keys '#{first_key}' '#{second_key}'") \
+        .with_command("gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys '#{first_key}' '#{second_key}'") \
         .with_path("/usr/bin:/usr/sbin:/bin") \
         .with_unless(/gpg .* --list-keys '#{first_key}' '#{second_key}'/)
     end

@@ -7,6 +7,7 @@ define duplicity(
   $dest_key = undef,
   $folder = undef,
   $cloud = undef,
+  $user = 'root',
   $ssh_id = undef,
   $pubkey_id = undef,
   $hour = undef,
@@ -33,6 +34,7 @@ define duplicity(
     dest_key           => $dest_key,
     folder             => $folder,
     cloud              => $cloud,
+    user               => $user,
     ssh_id             => $ssh_id,
     pubkey_id          => $pubkey_id,
     full_if_older_than => $full_if_older_than,
@@ -55,7 +57,7 @@ define duplicity(
   cron { $name :
     ensure => $ensure,
     command => $spoolfile,
-    user => 'root',
+    user => $user,
     minute => $_minute,
     hour => $_hour,
   }

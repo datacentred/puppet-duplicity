@@ -30,6 +30,22 @@ describe 'duplicity::job' do
       .with_mode('0700')
   end
 
+  context "non-root user" do
+    let(:params) {
+      {
+        :user      => 'devops',
+        :directory => '/etc',
+        :spoolfile => spoolfile,
+      }
+    }
+
+    it 'should be owned and only acessible by specified user' do
+      should contain_file(spoolfile) \
+        .with_owner('devops') \
+        .with_mode('0700')
+    end
+  end
+
   context "multiple directories" do
     let(:params) {
       {

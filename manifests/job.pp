@@ -8,6 +8,7 @@ define duplicity::job(
   $dest_key = undef,
   $folder = undef,
   $cloud = undef,
+  $user = 'root',
   $ssh_id = undef,
   $pubkey_id = undef,
   $full_if_older_than = undef,
@@ -176,7 +177,7 @@ define duplicity::job(
   file { $spoolfile:
     ensure  => $ensure,
     content => template("duplicity/file-backup.sh.erb"),
-    owner   => 'root',
+    owner   => $user,
     mode    => 0700,
   }
 

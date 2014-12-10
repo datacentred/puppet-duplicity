@@ -4,6 +4,8 @@ define duplicity(
   $bucket = undef,
   $dest_id = undef,
   $dest_key = undef,
+  $swift_authurl = undef,
+  $swift_authversion = '2',
   $folder = undef,
   $cloud = undef,
   $pubkey_id = undef,
@@ -20,36 +22,38 @@ define duplicity(
   $spoolfile = "${duplicity::params::job_spool}/${name}.sh"
 
   duplicity::job { $name :
-    ensure => $ensure,
-    spoolfile => $spoolfile,
-    directory => $directory,
-    bucket => $bucket,
-    dest_id => $dest_id,
-    dest_key => $dest_key,
-    folder => $folder,
-    cloud => $cloud,
-    pubkey_id => $pubkey_id,
+    ensure             => $ensure,
+    spoolfile          => $spoolfile,
+    directory          => $directory,
+    bucket             => $bucket,
+    dest_id            => $dest_id,
+    dest_key           => $dest_key,
+    folder             => $folder,
+    cloud              => $cloud,
+    pubkey_id          => $pubkey_id,
+    swift_authurl      => $swift_authurl,
+    swift_authversion  => $swift_authversion,
     full_if_older_than => $full_if_older_than,
-    pre_command => $pre_command,
-    remove_older_than => $remove_older_than,
+    pre_command        => $pre_command,
+    remove_older_than  => $remove_older_than,
   }
 
   $_hour = $hour ? {
-    undef => $duplicity::params::hour,
+    undef   => $duplicity::params::hour,
     default => $hour
   }
 
   $_minute = $minute ? {
-    undef => $duplicity::params::minute,
+    undef   => $duplicity::params::minute,
     default => $minute
   }
 
   cron { $name :
-    ensure => $ensure,
+    ensure  => $ensure,
     command => $spoolfile,
-    user => 'root',
-    minute => $_minute,
-    hour => $_hour,
+    user    => 'root',
+    minute  => $_minute,
+    hour    => $_hour,
   }
 
   File[$spoolfile]->Cron[$name]

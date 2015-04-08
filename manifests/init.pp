@@ -8,12 +8,13 @@ define duplicity(
   $swift_authversion = '2',
   $folder = undef,
   $cloud = undef,
-  $pubkey_id = undef,
+  $pub_encrypt_key_id = undef,
   $hour = undef,
   $minute = undef,
   $full_if_older_than = undef,
   $pre_command = undef,
   $remove_older_than = undef,
+  $pub_sign_key_id = undef,
 ) {
 
   include duplicity::params
@@ -30,12 +31,13 @@ define duplicity(
     dest_key           => $dest_key,
     folder             => $folder,
     cloud              => $cloud,
-    pubkey_id          => $pubkey_id,
+    pub_encrypt_key_id => $pub_encrypt_key_id,
     swift_authurl      => $swift_authurl,
     swift_authversion  => $swift_authversion,
     full_if_older_than => $full_if_older_than,
     pre_command        => $pre_command,
     remove_older_than  => $remove_older_than,
+    pub_sign_key_id    => $pub_sign_key_id,
   }
 
   $_hour = $hour ? {

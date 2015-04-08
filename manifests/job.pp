@@ -7,12 +7,13 @@ define duplicity::job(
   $dest_key = undef,
   $folder = undef,
   $cloud = undef,
-  $pubkey_id = undef,
+  $pub_encrypt_key_id = undef,
   $swift_authurl = undef,
   $swift_authversion = '2',
   $full_if_older_than = undef,
   $pre_command = undef,
   $remove_older_than = undef,
+  $pub_sign_key_id = undef,
   $archive_directory = '~/.cache/duplicity/',
 ) {
 
@@ -44,9 +45,9 @@ define duplicity::job(
     default => $cloud
   }
 
-  $_pubkey_id = $pubkey_id ? {
-    undef   => $duplicity::params::pubkey_id,
-    default => $pubkey_id
+  $_pub_encrypt_key_id = $pub_encrypt_key_id ? {
+    undef   => $duplicity::params::pub_encrypt_key_id,
+    default => $pub_encrypt_key_id
   }
 
   $_hour = $hour ? {
@@ -69,9 +70,14 @@ define duplicity::job(
     default => "$pre_command && "
   }
 
-  $_encryption = $_pubkey_id ? {
+  $_encryption = $_pub_encrypt_key_id ? {
     undef   => '--no-encryption',
-    default => "--encrypt-key ${_pubkey_id}"
+    default => "--encrypt-key ${_pub_encrypt_key_id}"
+  }
+
+  $_signing = $pub_sign_key_id ? {
+    undef => '',
+    default => "--signing-key ${_pub_sign_key_id}"
   }
 
   $_remove_older_than = $remove_older_than ? {
@@ -119,7 +125,7 @@ define duplicity::job(
 
   $_remove_older_than_command = $_remove_older_than ? {
     undef   => '',
-    default => " && duplicity remove-older-than ${_remove_older_than} --s3-use-new-style ${_encryption} --force ${_target_url}"
+    default => " && duplicity remove-older-than ${_remove_older_than} --s3-use-new-style ${_encryption} ${_signing} --force ${_target_url}"
   }
 
   file { $spoolfile:

@@ -8,6 +8,7 @@ define duplicity::job(
   $folder = undef,
   $cloud = undef,
   $encrypt_key_id = undef,
+  $pubkey_id = undef,
   $swift_authurl = undef,
   $swift_authversion = '2',
   $full_if_older_than = undef,
@@ -19,6 +20,12 @@ define duplicity::job(
 
   include duplicity::params
   include duplicity::packages
+
+  if $pubkey_id != undef {
+    $encrypt_key_id = $pubkey_id
+    warning('pubkey_id is depreciated - please use encrypt_key_id')
+    }
+  }
 
   $_bucket = $bucket ? {
     undef   => $duplicity::params::bucket,

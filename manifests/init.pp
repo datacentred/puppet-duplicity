@@ -23,6 +23,12 @@ define duplicity(
 
   $spoolfile = "${duplicity::params::job_spool}/${name}.sh"
 
+  if $pubkey_id != undef {
+    $encrypt_key_id = $pubkey_id
+    warning('pubkey_id is depreciated - please use encrypt_key_id')
+    }
+  }
+
   duplicity::job { $name :
     ensure             => $ensure,
     spoolfile          => $spoolfile,
@@ -39,11 +45,6 @@ define duplicity(
     pre_command        => $pre_command,
     remove_older_than  => $remove_older_than,
     sign_key_id        => $sign_key_id,
-  }
-
-  if $pubkey_id != undef {
-    $encrypt_key_id = $pubkey_id
-    }
   }
 
   $_hour = $hour ? {

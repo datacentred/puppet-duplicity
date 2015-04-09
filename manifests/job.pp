@@ -82,7 +82,7 @@ define duplicity::job(
 
   $_signing = $pub_sign_key_id ? {
     undef => '',
-    default => "--signing-key ${_pub_sign_key_id}"
+    default => "--sign-key ${_pub_sign_key_id}"
   }
 
   $_remove_older_than = $remove_older_than ? {

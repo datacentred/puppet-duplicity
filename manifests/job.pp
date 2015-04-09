@@ -21,7 +21,7 @@ define duplicity::job(
   include duplicity::params
   include duplicity::packages
 
-  if $pubkey_id != undef {
+  if $pubkey_id != undef and encrypt_key_id == undef {
     $encrypt_key_id = $pubkey_id
     warning('pubkey_id is depreciated - please use encrypt_key_id')
     }

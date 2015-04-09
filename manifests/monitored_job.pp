@@ -6,8 +6,8 @@ define duplicity::monitored_job(
   $dest_key = undef,
   $folder = undef,
   $cloud = undef,
-  $pub_encrypt_key_id = undef,
-  $pub_sign_key_id = undef,
+  $encrypt_key_id = undef,
+  $sign_key_id = undef,
   $hour = undef,
   $minute = undef,
   $full_if_older_than = undef,
@@ -22,19 +22,19 @@ define duplicity::monitored_job(
   $spoolfile = "${duplicity::params::job_spool}/${name}.sh"
 
   duplicity::job { $name :
-    ensure => $ensure,
-    spoolfile => $spoolfile,
-    directory => $directory,
-    bucket => $bucket,
-    dest_id => $dest_id,
-    dest_key => $dest_key,
-    folder => $folder,
-    cloud => $cloud,
-    pub_encrypt_key_id => $pub_encrypt_key_id,
-    pub_sign_key_id => $pub_sign_key_id,
+    ensure             => $ensure,
+    spoolfile          => $spoolfile,
+    directory          => $directory,
+    bucket             => $bucket,
+    dest_id            => $dest_id,
+    dest_key           => $dest_key,
+    folder             => $folder,
+    cloud              => $cloud,
+    encrypt_key_id     => $encrypt_key_id,
+    sign_key_id        => $sign_key_id,
     full_if_older_than => $full_if_older_than,
-    pre_command => $pre_command,
-    remove_older_than => $remove_older_than,
+    pre_command        => $pre_command,
+    remove_older_than  => $remove_older_than,
   }
 
   $_hour = $hour ? {
@@ -48,11 +48,11 @@ define duplicity::monitored_job(
   }
 
   periodicnoise::monitored_cron { $name :
-    ensure => $ensure,
-    command => $spoolfile,
-    user => 'root',
-    minute => $_minute,
-    hour => $_hour,
+    ensure            => $ensure,
+    command           => $spoolfile,
+    user              => 'root',
+    minute            => $_minute,
+    hour              => $_hour,
     execution_timeout => $execution_timeout,
   }
 

@@ -7,13 +7,13 @@ define duplicity::job(
   $dest_key = undef,
   $folder = undef,
   $cloud = undef,
-  $pub_encrypt_key_id = undef,
+  $encrypt_key_id = undef,
   $swift_authurl = undef,
   $swift_authversion = '2',
   $full_if_older_than = undef,
   $pre_command = undef,
   $remove_older_than = undef,
-  $pub_sign_key_id = undef,
+  $sign_key_id = undef,
   $archive_directory = '~/.cache/duplicity/',
 ) {
 
@@ -45,14 +45,14 @@ define duplicity::job(
     default => $cloud
   }
 
-  $_pub_encrypt_key_id = $pub_encrypt_key_id ? {
-    undef   => $duplicity::params::pub_encrypt_key_id,
-    default => $pub_encrypt_key_id
+  $_encrypt_key_id = $encrypt_key_id ? {
+    undef   => $duplicity::params::encrypt_key_id,
+    default => $encrypt_key_id
   }
 
-  $_pub_sign_key_id = $pub_sign_key_id ? {
-    undef   => $duplicity::params::pub_sign_key_id,
-    default => $pub_sign_key_id
+  $_sign_key_id = $sign_key_id ? {
+    undef   => $duplicity::params::sign_key_id,
+    default => $sign_key_id
   }
 
   $_hour = $hour ? {
@@ -75,14 +75,14 @@ define duplicity::job(
     default => "$pre_command && "
   }
 
-  $_encryption = $_pub_encrypt_key_id ? {
+  $_encryption = $_encrypt_key_id ? {
     undef   => '--no-encryption',
-    default => "--encrypt-key ${_pub_encrypt_key_id}"
+    default => "--encrypt-key ${_encrypt_key_id}"
   }
 
-  $_signing = $pub_sign_key_id ? {
-    undef => '',
-    default => "--sign-key ${_pub_sign_key_id}"
+  $_signing = $sign_key_id ? {
+    undef   => '',
+    default => "--sign-key ${_sign_key_id}"
   }
 
   $_remove_older_than = $remove_older_than ? {
@@ -140,19 +140,19 @@ define duplicity::job(
     mode    => '0700',
   }
 
-  if $_pub_encrypt_key_id {
+  if $_encrypt_key_id {
     exec { 'duplicity-pgp':
-      command => "gpg --keyserver subkeys.pgp.net --recv-keys ${_pub_encrypt_key_id}",
+      command => "gpg --keyserver subkeys.pgp.net --recv-keys ${_encrypt_key_id}",
       path    => '/usr/bin:/usr/sbin:/bin',
-      unless  => "gpg --list-key ${_pub_encrypt_key_id}"
+      unless  => "gpg --list-key ${_encrypt_key_id}"
     }
   }
 
-  if $_pub_sign_key_id {
+  if $_sign_key_id {
     exec { 'duplicity-pgp':
-      command => "gpg --keyserver subkeys.pgp.net --recv-keys ${_pub_sign_key_id}",
+      command => "gpg --keyserver subkeys.pgp.net --recv-keys ${_sign_key_id}",
       path    => '/usr/bin:/usr/sbin:/bin',
-      unless  => "gpg --list-key ${_pub_sign_key_id}"
+      unless  => "gpg --list-key ${_sign_key_id}"
     }
   }
 

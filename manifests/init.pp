@@ -9,6 +9,7 @@ define duplicity(
   $folder = undef,
   $cloud = undef,
   $pub_encrypt_key_id = undef,
+  $pub_key_id = undef,
   $hour = undef,
   $minute = undef,
   $full_if_older_than = undef,
@@ -38,6 +39,11 @@ define duplicity(
     pre_command        => $pre_command,
     remove_older_than  => $remove_older_than,
     pub_sign_key_id    => $pub_sign_key_id,
+  }
+
+  if $pub_key_id != undef {
+    $pub_encrypt_key_id = $pub_key_id
+    }
   }
 
   $_hour = $hour ? {

@@ -4,6 +4,7 @@ class duplicity::params(
   $dest_key              = undef,
   $cloud                 = $duplicity::defaults::cloud,
   $pub_encrypt_key_id    = undef,
+  $pub_sign_key_id       = undef,
   $hour                  = $duplicity::defaults::hour,
   $minute                = $duplicity::defaults::minute,
   $full_if_older_than    = $duplicity::defaults::full_if_older_than,

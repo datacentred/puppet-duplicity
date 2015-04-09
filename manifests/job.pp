@@ -50,6 +50,11 @@ define duplicity::job(
     default => $pub_encrypt_key_id
   }
 
+  $_pub_sign_key_id = $pub_sign_key_id ? {
+    undef   => $duplicity::params::pub_sign_key_id,
+    default => $pub_sign_key_id
+  }
+
   $_hour = $hour ? {
     undef   => $duplicity::params::hour,
     default => $hour
@@ -135,11 +140,20 @@ define duplicity::job(
     mode    => '0700',
   }
 
-  if $_pubkey_id {
+  if $_pub_encrypt_key_id {
     exec { 'duplicity-pgp':
-      command => "gpg --keyserver subkeys.pgp.net --recv-keys ${_pubkey_id}",
+      command => "gpg --keyserver subkeys.pgp.net --recv-keys ${_pub_encrypt_key_id}",
       path    => '/usr/bin:/usr/sbin:/bin',
-      unless  => "gpg --list-key ${_pubkey_id}"
+      unless  => "gpg --list-key ${_pub_encrypt_key_id}"
     }
   }
+
+  if $_pub_sign_key_id {
+    exec { 'duplicity-pgp':
+      command => "gpg --keyserver subkeys.pgp.net --recv-keys ${_pub_sign_key_id}",
+      path    => '/usr/bin:/usr/sbin:/bin',
+      unless  => "gpg --list-key ${_pub_sign_key_id}"
+    }
+  }
+
 }

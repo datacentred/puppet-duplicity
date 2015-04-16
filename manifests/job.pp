@@ -8,6 +8,7 @@ define duplicity::job(
   $folder = undef,
   $cloud = undef,
   $encrypt_key_id = undef,
+  $encrypt_key_passphrase = undef,
   $pubkey_id = undef,
   $swift_authurl = undef,
   $swift_authversion = '2',
@@ -15,6 +16,7 @@ define duplicity::job(
   $pre_command = undef,
   $remove_older_than = undef,
   $sign_key_id = undef,
+  $sign_key_passphrase = undef,
   $archive_directory = '~/.cache/duplicity/',
 ) {
 
@@ -136,7 +138,7 @@ define duplicity::job(
 
   $_remove_older_than_command = $_remove_older_than ? {
     undef   => '',
-    default => " && duplicity remove-older-than ${_remove_older_than} --s3-use-new-style ${_encryption} ${_signing} --force ${_target_url}"
+    default => "duplicity remove-older-than ${_remove_older_than} --s3-use-new-style ${_encryption} ${_signing} --force ${_target_url}"
   }
 
   file { $spoolfile:

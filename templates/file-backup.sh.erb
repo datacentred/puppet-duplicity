@@ -2,11 +2,11 @@
 set -e
 set -o pipefail
 
-<% if @encrypt_key_passphrase -%> 
-PASSPHRASE='<%= @encrypt_key_passphrase -%>'
+<% if @encrypt_key_passphrase -%>
+export PASSPHRASE='<%= @encrypt_key_passphrase -%>'
 <% end -%>
-<% if @sign_key_passphrase -%> 
-SIGN_PASSPHRASE='<%= @sign_key_passphrase -%>'
+<% if @sign_key_passphrase -%>
+export SIGN_PASSPHRASE='<%= @sign_key_passphrase -%>'
 <% end -%>
 <% @_environment.each do |var|-%>
 export <%= var %>
@@ -18,5 +18,5 @@ duplicity --full-if-older-than <%= @_full_if_older_than -%> \
           --exclude '**' \
           --archive-dir <%= @archive_directory -%> \
           <%= @_encryption -%> <%= @_signing -%> \
-          / <%= @_target_url -%>
+          / <%= @_target_url %>
 <%= @_remove_older_than_command %>

@@ -2,11 +2,11 @@
 set -e
 set -o pipefail
 
-<% if @encrypt_key_passphrase -%> 
-PASSPHRASE='<%= @encrypt_key_passphrase -%>'
+<% if @encrypt_key_passphrase -%>
+export PASSPHRASE='<%= @encrypt_key_passphrase -%>'
 <% end -%>
-<% if @sign_key_passphrase -%> 
-SIGN_PASSPHRASE='<%= @sign_key_passphrase -%>'
+<% if @sign_key_passphrase -%>
+export SIGN_PASSPHRASE='<%= @sign_key_passphrase -%>'
 <% end -%>
 <% @_environment.each do |var|-%>
 export <%= var %>

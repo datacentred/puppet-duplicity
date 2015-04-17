@@ -9,6 +9,7 @@ define duplicity(
   $folder = undef,
   $cloud = undef,
   $encrypt_key_id = undef,
+  $encrypt_key_passphrase = undef,
   $pubkey_id = undef,
   $hour = undef,
   $minute = undef,
@@ -16,6 +17,7 @@ define duplicity(
   $pre_command = undef,
   $remove_older_than = undef,
   $sign_key_id = undef,
+  $sign_key_passphrase = undef,
 ) {
 
   include duplicity::params
@@ -29,21 +31,23 @@ define duplicity(
   }
 
   duplicity::job { $name :
-    ensure             => $ensure,
-    spoolfile          => $spoolfile,
-    directory          => $directory,
-    bucket             => $bucket,
-    dest_id            => $dest_id,
-    dest_key           => $dest_key,
-    folder             => $folder,
-    cloud              => $cloud,
-    encrypt_key_id     => $encrypt_key_id,
-    swift_authurl      => $swift_authurl,
-    swift_authversion  => $swift_authversion,
-    full_if_older_than => $full_if_older_than,
-    pre_command        => $pre_command,
-    remove_older_than  => $remove_older_than,
-    sign_key_id        => $sign_key_id,
+    ensure                 => $ensure,
+    spoolfile              => $spoolfile,
+    directory              => $directory,
+    bucket                 => $bucket,
+    dest_id                => $dest_id,
+    dest_key               => $dest_key,
+    folder                 => $folder,
+    cloud                  => $cloud,
+    encrypt_key_id         => $encrypt_key_id,
+    encrypt_key_passphrase => $encrypt_key_passphrase,
+    swift_authurl          => $swift_authurl,
+    swift_authversion      => $swift_authversion,
+    full_if_older_than     => $full_if_older_than,
+    pre_command            => $pre_command,
+    remove_older_than      => $remove_older_than,
+    sign_key_id            => $sign_key_id,
+    sign_key_passphrase    => $sign_key_passphrase,
   }
 
   $_hour = $hour ? {

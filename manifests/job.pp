@@ -99,9 +99,9 @@ define duplicity::job(
     default => $remove_older_than,
   }
 
- if !($_cloud in [ 's3', 'cf', 'swift', 'file' ]) {
-   fail('$cloud required and at this time supports s3 for amazon s3 and cf for Rackspace cloud files')
- }
+  if !($_cloud in [ 's3', 'cf', 'swift', 'file' ]) {
+    fail('$cloud required and at this time supports s3 for amazon s3 and cf for Rackspace cloud files')
+  }
 
   case $ensure {
     'present' : {

@@ -13,6 +13,7 @@ define duplicity::monitored_job(
   $full_if_older_than = undef,
   $pre_command = undef,
   $remove_older_than = undef,
+  $custom_endpoint = undef,
   $execution_timeout
 )
 {
@@ -35,6 +36,7 @@ define duplicity::monitored_job(
     full_if_older_than => $full_if_older_than,
     pre_command        => $pre_command,
     remove_older_than  => $remove_older_than,
+    custom_endpoint    => $custom_endpoint,
   }
 
   $_hour = $hour ? {

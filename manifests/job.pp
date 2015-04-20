@@ -110,7 +110,7 @@ define duplicity::job(
         fail('directory parameter has to be passed if ensure != absent')
       }
 
-      if ($_bucket == undef) and ($custom_endpoint == undef) {
+      if !$_bucket and !$custom_endpoint {
         fail('You need to define a container/bucket name!')
       }
 
@@ -130,7 +130,7 @@ define duplicity::job(
     'file'  => [],
   }
 
-  if $custom_endpoint != undef {
+  if $custom_endpoint {
     $_target_url = $custom_endpoint
   }
   else {

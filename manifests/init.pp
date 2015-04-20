@@ -18,6 +18,7 @@ define duplicity(
   $remove_older_than = undef,
   $sign_key_id = undef,
   $sign_key_passphrase = undef,
+  $custom_endpoint = undef,
 ) {
 
   include duplicity::params
@@ -48,6 +49,7 @@ define duplicity(
     remove_older_than      => $remove_older_than,
     sign_key_id            => $sign_key_id,
     sign_key_passphrase    => $sign_key_passphrase,
+    custom_endpoint        => $custom_endpoint,
   }
 
   $_hour = $hour ? {

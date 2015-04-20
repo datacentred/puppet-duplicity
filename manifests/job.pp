@@ -17,6 +17,7 @@ define duplicity::job(
   $remove_older_than = undef,
   $sign_key_id = undef,
   $sign_key_passphrase = undef,
+  $custom_endpoint = undef,
   $archive_directory = '~/.cache/duplicity/',
 ) {
 
@@ -98,9 +99,9 @@ define duplicity::job(
     default => $remove_older_than,
   }
 
-  if !($_cloud in [ 's3', 'cf', 'swift', 'file' ]) {
-    fail('$cloud required and at this time supports s3 for amazon s3 and cf for Rackspace cloud files')
-  }
+ if !($_cloud in [ 's3', 'cf', 'swift', 'file' ]) {
+   fail('$cloud required and at this time supports s3 for amazon s3 and cf for Rackspace cloud files')
+ }
 
   case $ensure {
     'present' : {
@@ -109,7 +110,7 @@ define duplicity::job(
         fail('directory parameter has to be passed if ensure != absent')
       }
 
-      if !$_bucket {
+      if ($_bucket == undef) and ($custom_endpoint == undef) {
         fail('You need to define a container/bucket name!')
       }
 
@@ -129,11 +130,16 @@ define duplicity::job(
     'file'  => [],
   }
 
-  $_target_url = $_cloud ? {
-    'cf'    => "'cf+http://${_bucket}'",
-    's3'    => "'s3+http://${_bucket}/${_folder}/${name}/'",
-    'file'  => "'file://${_bucket}'",
-    'swift' => "'swift://${_bucket}'",
+  if $custom_endpoint != undef {
+    $_target_url = $custom_endpoint
+  }
+  else {
+    $_target_url = $_cloud ? {
+    'cf'     => "'cf+http://${_bucket}'",
+    's3'     => "'s3+http://${_bucket}/${_folder}/${name}/'",
+    'file'   => "'file://${_bucket}'",
+    'swift'  => "'swift://${_bucket}'",
+    }
   }
 
   $_remove_older_than_command = $_remove_older_than ? {

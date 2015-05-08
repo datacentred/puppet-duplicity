@@ -155,7 +155,7 @@ define duplicity::job(
   }
 
   if $_encrypt_key_id {
-    exec { "duplicity-pgp-encrypt_${_target_url}":
+    exec { "duplicity-pgp-encrypt_${name}":
       command => "gpg --keyserver subkeys.pgp.net --recv-keys ${_encrypt_key_id}",
       path    => '/usr/bin:/usr/sbin:/bin',
       unless  => "gpg --list-key ${_encrypt_key_id}"
@@ -163,7 +163,7 @@ define duplicity::job(
   }
 
   if $_sign_key_id {
-    exec { "duplicity-pgp-sign_${_target_url}":
+    exec { "duplicity-pgp-sign_${name}":
       command => "gpg --keyserver subkeys.pgp.net --recv-keys ${_sign_key_id}",
       path    => '/usr/bin:/usr/sbin:/bin',
       unless  => "gpg --list-key ${_sign_key_id}"

@@ -71,7 +71,9 @@ define duplicity(
       minute  => $_minute,
       hour    => $_hour,
     }
-  }
 
   File[$spoolfile]->Cron[$name]
+
+  }
+
 }

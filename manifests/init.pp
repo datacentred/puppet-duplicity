@@ -19,6 +19,7 @@ define duplicity(
   $sign_key_id = undef,
   $sign_key_passphrase = undef,
   $custom_endpoint = undef,
+  $create_cron = true,
 ) {
 
   include duplicity::params
@@ -62,12 +63,14 @@ define duplicity(
     default => $minute
   }
 
-  cron { $name :
-    ensure  => $ensure,
-    command => $spoolfile,
-    user    => 'root',
-    minute  => $_minute,
-    hour    => $_hour,
+  if $create_cron {
+    cron { $name :
+      ensure  => $ensure,
+      command => $spoolfile,
+      user    => 'root',
+      minute  => $_minute,
+      hour    => $_hour,
+    }
   }
 
   File[$spoolfile]->Cron[$name]

@@ -1,6 +1,7 @@
 define duplicity::job(
   $ensure = 'present',
   $spoolfile,
+  $script_owner,
   $directory = undef,
   $bucket = undef,
   $dest_id = undef,
@@ -150,7 +151,7 @@ define duplicity::job(
   file { $spoolfile:
     ensure  => $ensure,
     content => template('duplicity/file-backup.sh.erb'),
-    owner   => 'root',
+    owner   => $script_owner,
     mode    => '0700',
   }
 

@@ -2,6 +2,8 @@ define duplicity::job(
   $ensure = 'present',
   $spoolfile,
   $script_owner,
+  $script_permissions,
+  $script_group_owner,
   $directory = undef,
   $bucket = undef,
   $dest_id = undef,
@@ -152,7 +154,8 @@ define duplicity::job(
     ensure  => $ensure,
     content => template('duplicity/file-backup.sh.erb'),
     owner   => $script_owner,
-    mode    => '0700',
+    mode    => $script_permissions,
+    group   => $script_group_owner,
   }
 
   if $_encrypt_key_id {

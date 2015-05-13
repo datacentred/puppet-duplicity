@@ -21,7 +21,9 @@ define duplicity(
   $custom_endpoint = undef,
   $create_cron = true,
   $script_owner = 'root',
-) {
+  $script_permissions = '0700',
+  $script_group_owner = 'root',
+  ) {
 
   include duplicity::params
   include duplicity::packages
@@ -37,6 +39,8 @@ define duplicity(
     ensure                 => $ensure,
     spoolfile              => $spoolfile,
     script_owner           => $script_owner,
+    script_permissions     => $script_permissions,
+    script_group_owner     => $script_group_owner,
     directory              => $directory,
     bucket                 => $bucket,
     dest_id                => $dest_id,

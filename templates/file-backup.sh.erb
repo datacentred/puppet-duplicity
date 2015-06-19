@@ -18,5 +18,6 @@ duplicity --full-if-older-than <%= @_full_if_older_than -%> \
           --exclude '**' \
           --archive-dir <%= @archive_directory -%> \
           <%= @_encryption -%> <%= @_signing -%> \
-          / <%= @_target_url %>
+          / <%= @_target_url %> \
+          > /var/log/duplicity/<%= @directory.tr('/', '_') %>.log
 <%= @_remove_older_than_command %>
